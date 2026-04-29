@@ -1,0 +1,108 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PPT</title>
+  <!-- Font Awesome (only one version needed) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="shortcut icon" href="./image/favicon.io/logo sign 2.png" type="image/x-icon" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+ 
+
+  <!-- Navbar Start -->
+  <nav class="navbar is-white is-fixed-top" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a href="/" class="navbar-item">
+        <img src="./image/img/light bg.svg" alt="Logo" class="logo" />
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="mainNavbar">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="mainNavbar" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="index.html">Home</a>
+        <a class="navbar-item" href="earner-dashboard.html">Dashboard</a>
+        <a class="navbar-item" href="readMore.html">Read More</a>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button has-background-black has-text-white-bis" href="form.html">Sign Up</a>
+            <a class="button has-background-light has-text-black" href="input.html">Login</a>
+          </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="navbar-item has-dropdown is-hoverable" id="profileDropdown">
+          <a class="navbar-link" id="profileToggle">
+            <img class="is-rounded" src="#" alt="">
+          </a>
+
+          <div class="navbar-dropdown is-right">
+            <a class="navbar-item" href="user-profile.html"><i class="fa-solid fa-user mr-1 has-text-link"></i> Profile</a> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Navbar End -->
+  
+
+  <style>.verified{color:green;font-weight:700}.small{font-size:.9rem}
+  </style>
+</head>
+<body>
+<section class="section ">
+  <!-- Back Button -->
+<a href="#" onclick="goBack()" class="button is-light m-5">&larr; Back</a>
+  <div class="container">
+    <h1 class="title">Earner Dashboard </h1>
+
+    <div class="box">
+      <label class="label">User name</label>
+      <h5> Users must use the same username for all tasks to ensure their daily task records remain accurate. </h5>
+      <input id="uname" class="input" placeholder="e.g., Aisha">
+      <div class="buttons mt-2"><button class="button is-primary" id="uReg">Register / Switch</button></div>
+      <div id="notify" class="notification is-hidden mt-2"></div>
+    </div>
+
+    <div class="box">
+      <h2 class="subtitle is-6">Available Tasks</h2>
+      <div id="tasksArea"></div>
+    </div>
+
+    <div class="box">
+      <h2 class="subtitle is-6">My Account</h2>
+      <div id="myAccount"></div>
+      <div class="mt-3"><button class="button is-link" id="withdrawBtn">Request Withdraw (if $10+)</button></div>
+    </div>
+
+    <div class="box">
+      <h2 class="subtitle is-6">My Activity</h2>
+      <div id="activity"></div>
+    </div>
+
+  </div>
+</section>
+
+<script src="js/script.js"></script>
+<script src="js/earner-dashboard.js" ></script>
+</body>
+</html>

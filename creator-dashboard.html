@@ -1,0 +1,119 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>PPT Creator Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet"/>
+  <style>
+    body { background-color: #f9fafb; padding: 20px; }
+    .small { font-size: .9rem; }
+    .plan-card {
+      border: 2px solid #ddd; border-radius: 12px; padding: 1rem;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .plan-card.active { border-color: #3273dc; background-color: #f0f6ff; }
+    .pricing-summary { margin-top: 30px; display: none; }
+    .pricing-summary.show { display: block; }
+  </style>
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-centered">🎯 PPT Creator Dashboard</h1>
+    <p class="subtitle has-text-centered">Select your plan, post tasks, and track performance.</p>
+
+    <!-- Creator Plans -->
+    <div class="box">
+      <h2 class="subtitle has-text-centered">Choose Your Creator Plan</h2>
+      <div class="columns is-multiline is-centered">
+        <div class="column is-one-third">
+          <div class="plan-card has-text-centered" data-plan="Standard" data-discount="0" data-monthly="0">
+            <h3 class="title is-5">Standard</h3>
+            <p>No discount</p>
+            <p class="has-text-weight-semibold">0% OFF</p>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="plan-card has-text-centered" data-plan="Premium" data-discount="10" data-monthly="20">
+            <h3 class="title is-5 has-text-warning">Premium</h3>
+            <p>10% discount</p>
+            <p class="has-text-weight-semibold">$20/month</p>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="plan-card has-text-centered" data-plan="Diamond" data-discount="20" data-monthly="30">
+            <h3 class="title is-5 has-text-info">Diamond</h3>
+            <p>20% discount + top priority</p>
+            <p class="has-text-weight-semibold">$30/month</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="pricingSummary" class="pricing-summary box">
+        <h2 class="title is-5">📊 Plan Summary</h2>
+        <p><strong>Selected Plan:</strong> <span id="selectedPlan">None</span></p>
+        <p><strong>Discount:</strong> <span id="selectedDiscount">0</span>%</p>
+        <p><strong>Monthly Price:</strong> $<span id="monthlyPrice">0</span></p>
+        <p><strong>6-Month Price:</strong> $<span id="sixMonth">0</span></p>
+        <p><strong>12-Month Price:</strong> $<span id="twelveMonth">0</span></p>
+      </div>
+    </div>
+
+    <!-- Task Posting -->
+    <div class="box">
+      <h2 class="subtitle has-text-centered">Post a Task</h2>
+
+      <label class="label">Creator Name</label>
+      <input id="creatorName" class="input" placeholder="Your name">
+
+      <label class="label mt-3">Platform & Action</label>
+      <div class="select is-fullwidth">
+        <select id="platform">
+          <option value="facebook_follow">Facebook follower $0.010</option>
+          <option value="facebook_view">Facebook view $0.007</option>
+          <option value="youtube_sub">YouTube subscriber $0.020</option>
+          <option value="youtube_view">YouTube view $0.007</option>
+          <option value="tiktok_follow">TikTok follower $0.010</option>
+          <option value="tiktok_view">TikTok view $0.005</option>
+          <option value="instagram_follow">Instagram follower $0.010</option>
+          <option value="instagram_view">Instagram view $0.005</option>
+          <option value="app_install">App Install $0.030</option>
+        </select>
+      </div>
+
+      <label class="label mt-3">Action Count</label>
+      <input id="actionCount" type="number" class="input" value="1000" min="1">
+
+      <label class="label mt-3">Social Link</label>
+      <input id="cLink" class="input" placeholder="https://...">
+
+      <label class="label mt-3">Creator Balance (USD)</label>
+      <input id="creatorBalance" class="input" type="number" value="100" min="0">
+
+      <div class="notification is-info is-light mt-3">
+        <p><strong>Total (with discount):</strong> $<span id="totalCost">0.00</span></p>
+      </div>
+
+      <button class="button is-primary is-fullwidth" id="createBtn">Pay & Post Task</button>
+    </div>
+
+    <!-- Creator Tasks -->
+    <div class="box">
+      <h2 class="subtitle">Your Posted Tasks</h2>
+      <div id="creatorTasks"></div>
+     <div id="creatorPayments"></div>
+     <div id="earnerHistory"></div>
+    </div>
+
+    <!-- Payment History -->
+    <div class="box">
+      <h2 class="subtitle">Payment / Creator History</h2>
+      <div id="creatorPayments"></div>
+    </div>
+
+</section>
+
+<script src="js/creator-dashboard.js" ></script>
+
+</body>
+</html>

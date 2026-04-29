@@ -1,0 +1,63 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PPT</title>
+  <!-- Font Awesome (only one version needed) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="shortcut icon" href="./image/favicon.io/logo sign 2.png" type="image/x-icon" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+   
+  <!-- Navbar (Visible on Mobile) -->
+  <nav class="navbar is-light is-hidden-desktop">
+    <div class="navbar-brand">
+       <a href="#" class="navbar-item">
+        <img src="./image/img/light bg.svg" alt="Logo" class="logo" />
+      </a>
+      <button class="navbar-burger" id="mobileToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <span class="navbar-item has-text-white has-text-weight-bold "></span>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebarMenu">
+    <button class="toggle-btn" id="collapseBtn">
+      <i class="fas fa-bars"></i> <span>Menu</span>
+    </button>
+    <a href="earner-dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+    <a href="edit-profile.html"><i class="fas fa-user-edit"></i> <span>Edit Profile</span></a>
+    <a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a>
+    <a href="change-password.html"><i class="fas fa-lock"></i> <span>Change Password</span></a>
+     <hr class="navbar-divider">
+    <a href="#"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-contents" id="mainContent">
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Welcome to PPT.</h1>
+        <p class="subtitle">Select an option from the sidebar.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/script.js" ></script>
+  <script src="js/user-profile.js" ></script>
+
+</body>
+</html>

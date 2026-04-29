@@ -1,0 +1,117 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PPT</title>
+  <!-- Font Awesome (only one version needed) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="shortcut icon" href="./image/favicon.io/logo sign 2.png" type="image/x-icon" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <div class="settings-card">
+         <a href="#" onclick="goBack()" class="button is-light m-4">&larr; Back</a>
+        <h2 class="title has-text-centered has-text-dark mb-5">
+          <i class="fas fa-cog mr-2"></i>Settings
+        </h2>
+
+        <!-- Notifications -->
+        <div class="settings-section">
+          <h2 class="subtitle has-text-weight-semibold"><i class="fas fa-bell mr-2"></i> Notifications</h2>
+          <label class="checkbox">
+            <input type="checkbox" id="emailNotify" checked>
+            Receive Email Notifications
+          </label>
+          <br>
+          <label class="checkbox mt-2">
+            <input type="checkbox" id="taskNotify" checked>
+            Receive Task Updates
+          </label>
+        </div>
+
+        <!-- Display Settings -->
+        <div class="settings-section">
+          <h2 class="subtitle has-text-weight-semibold"><i class="fas fa-adjust mr-2"></i> Display</h2>
+          <label class="switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="check is-primary"></span>
+          </label>
+          <span class="ml-2">Enable Dark Mode</span>
+        </div>
+
+        <!-- Language & Timezone -->
+        <div class="settings-section">
+          <h2 class="subtitle has-text-weight-semibold"><i class="fas fa-globe mr-2"></i> Language & Timezone</h2>
+          <div class="field">
+            <label class="label">Language</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="languageSelect">
+                  <option>English</option>
+                  <option>French</option>
+                  <option>Spanish</option>
+                  <option>German</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Timezone</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="timezoneSelect">
+                  <option>GMT +0</option>
+                  <option selected>GMT +1 (West Africa Time)</option>
+                  <option>GMT +2</option>
+                  <option>GMT +5</option>
+                  <option>GMT -5 (Eastern Time)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy -->
+        <div class="settings-section">
+          <h2 class="subtitle has-text-weight-semibold"><i class="fas fa-user-shield mr-2"></i> Privacy</h2>
+          <div class="field">
+            <label class="label">Profile Visibility</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="privacySelect">
+                  <option selected>Public</option>
+                  <option>Only Friends</option>
+                  <option>Private</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons is-centered mt-5">
+          <button class="button is-primary" id="saveSettings">
+            <i class="fas fa-save mr-2"></i> Save Settings
+          </button>
+          <button class="button is-light" id="resetSettings">
+            <i class="fas fa-undo mr-2"></i> Reset
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="js/script.js" ></script>
+  <script src="js/settings.js" ></script>
+</body>
+</html>

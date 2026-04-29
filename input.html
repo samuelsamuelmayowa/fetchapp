@@ -1,0 +1,76 @@
+  
+  
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PPT</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="./image/favicon.io/logo sign 2.png" type="image/x-icon" />
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  
+  
+  <!-- Choose Role -->
+  <div id="roleSelection" class="form-container">
+     <a href="#" onclick="goBack()" class="button is-light m-4">&larr; Back</a>
+    <h2 class="form-title">Login</h2>
+    <p class="has-text-centered mb-4">Choose how you want to login:</p>
+    <div class="buttons is-centered">
+      <button class="button is-link is-rounded" id="loginAsEarner">Login as Earner</button>
+      <button class="button is-info is-rounded" id="loginAsCreator">Login as Creator</button>
+    </div>
+  </div>
+
+  <!-- Earner Login Form -->
+  <div id="earnerLogin" class="form-container hidden">
+     <a href="#" onclick="goBack()" class="button is-light m-4">&larr; Back</a>
+    <h2 class="form-title">Earner Login</h2>
+    <form>
+      <div class="field">
+        <label class="label">Email</label>
+        <input class="input" type="email" placeholder="Enter your email" required>
+      </div>
+      <div class="field">
+        <label class="label">Password</label>
+        <input class="input" type="password" placeholder="Enter your password" required>
+      </div>
+      <button class="button is-success is-fullwidth">Login</button>
+    </form>
+  </div>
+
+  <!-- Creator Login Form -->
+  <div id="creatorLogin" class="form-container hidden">
+     <a href="#" onclick="goBack()" class="button is-light m-4">&larr; Back</a>
+    <h2 class="form-title">Creator Login</h2>
+    <form>
+      <div class="field">
+        <label class="label">Email</label>
+        <input class="input" type="email" placeholder="Enter your email" required>
+      </div>
+      <div class="field">
+        <label class="label">Password</label>
+        <input class="input" type="password" placeholder="Enter your password" required>
+      </div>
+      <button class="button is-primary is-fullwidth">Login</button>
+    </form>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

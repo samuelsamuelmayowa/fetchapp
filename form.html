@@ -1,0 +1,142 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PPT</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="./image/favicon.io/logo sign 2.png" type="image/x-icon" />
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Role Selection -->
+  <div id="roleSelection" class="form-container">
+   <a href="#" onclick="goBack()" class="button is-light m-4">&larr; Back</a>
+    <h2 class="form-title">Sign Up</h2>
+    <p class="has-text-centered mb-4">Choose how you want to join:</p>
+    <div class="buttons is-centered">
+      <button class="button is-link is-rounded" id="signAsEarner">Sign Up as Earner</button>
+      <button class="button is-info is-rounded" id="signAsCreator">Sign Up as Creator</button>
+    </div>
+
+     <a class="navbar-item" href="forgot-password.html" onclick="showSection('forgotPasswordForm')"><i class="fas fa-key mr-1 has-text-link"></i>Forgotten Password</a>
+  </div>
+
+  <!-- Earner Signup -->
+  <div id="earnerForm" class="form-container hidden">
+     <a href="#" onclick="goBack()" class="button is-light m-4">&larr; Back</a>
+    <h2 class="form-title">Earner Signup</h2>
+    <form>
+      <div class="field">
+        <label class="label">Full Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Enter your full name" required>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <input class="input" type="email" placeholder="Enter your email" required>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">password</label>
+        <div class="control">
+          <input class="input" type="password" placeholder="Enter your password" required>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Country</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Enter your country" required>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Facebook Link</label>
+        <div class="control">
+          <input class="input" type="url" placeholder="Enter your Facebook profile link">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">YouTube Link</label>
+        <div class="control">
+          <input class="input" type="url" placeholder="Enter your YouTube channel link">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Instagram Link</label>
+        <div class="control">
+          <input class="input" type="url" placeholder="Enter your Instagram profile link">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">TikTok Link</label>
+        <div class="control">
+          <input class="input" type="url" placeholder="Enter your TikTok profile link">
+        </div>
+      </div>
+      <div class="field mt-4">
+        <div class="control">
+          <button class="button is-success is-fullwidth">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Creator Signup -->
+  <div id="creatorForm" class="form-container hidden">
+     <a href="#" onclick="goBack()" class="button is-light m-4">&larr; Back</a>
+    <h2 class="form-title">Creator Signup</h2>
+    <form>
+      <div class="field">
+        <label class="label">Full Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Enter your full name" required>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <input class="input" type="email" placeholder="Enter your email" required>
+        </div>
+      </div>
+       <div class="field">
+        <label class="label">password</label>
+        <div class="control">
+          <input class="input" type="password" placeholder="Enter your password" required>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Country</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Enter your country" required>
+        </div>
+      </div>
+      <div class="field mt-4">
+        <div class="control">
+          <button class="button is-primary is-fullwidth">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Custom JS -->
+  <script src="js/script.js"></script>
+  <script src="js/user-profile.js" ></script>
+</body>
+</html>
