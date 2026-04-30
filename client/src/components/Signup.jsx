@@ -5,6 +5,7 @@ import {
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import CountrySelect from "./CountrySelect";
 
 export default function Signup() {
   const [screen, setScreen] = useState("role");
@@ -101,7 +102,8 @@ function SignupForm({ title, buttonText, buttonClass, showSocials = false }) {
         <Input label="Full Name" type="text" placeholder="Enter your full name" />
         <Input label="Email" type="email" placeholder="Enter your email" />
         <Input label="Password" type="password" placeholder="Enter your password" />
-        <Input label="Country" type="text" placeholder="Enter your country" />
+        {/* <Input label="Country" type="text" placeholder="Enter your country" /> */}
+        <CountrySelect />
 
         {showSocials && (
           <>

@@ -58,12 +58,12 @@ const Home = () => {
               </div>
 
               <div className="hidden items-center gap-3 md:flex">
-                <Link
+                {/* <Link
                   to="/login"
                   className="rounded-xl px-5 py-2 text-sm font-semibold text-slate-200 hover:bg-white/10"
                 >
                   Login
-                </Link>
+                </Link> */}
                 <Link
                   to="/signup"
                   className="rounded-xl bg-white px-5 py-2 text-sm font-bold text-slate-950 shadow-lg hover:bg-slate-200"
@@ -82,7 +82,7 @@ const Home = () => {
                 <Link to="/">Home</Link>
                 <Link to="/dashboard">Dashboard</Link>
                 <Link to="/read-more">Read More</Link>
-                <Link to="/login">Login</Link>
+                {/* <Link to="/login">Login</Link> */}
                 <Link
                   to="/signup"
                   className="rounded-xl bg-white px-5 py-3 text-center font-bold text-slate-950"

@@ -1,0 +1,7 @@
+Home page 
+sighup working 
+Login working
+User dashboard 
+Admin dashboard 
+Admin logic 
+User dashboard logic
