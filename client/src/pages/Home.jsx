@@ -154,7 +154,7 @@ const Home = () => {
               <div className="mb-6 flex items-center justify-between">
                 <div>
                   <p className="text-sm text-slate-400">Today Earnings</p>
-                  <h2 className="text-4xl font-black">₦12,500</h2>
+                  <h2 className="text-4xl font-black">$12,500</h2>
                 </div>
                 <div className="rounded-2xl bg-green-500/20 px-4 py-2 text-sm font-bold text-green-300">
                   +28%
