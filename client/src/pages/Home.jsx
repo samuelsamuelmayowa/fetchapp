@@ -97,11 +97,13 @@ const Home = () => {
 
       {/* HERO */}
       <section className="relative overflow-hidden px-6 pt-36 pb-24">
-        <div className="absolute left-1/2 top-20 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/30 blur-3xl"></div>
-        <div className="absolute right-10 top-40 h-72 w-72 rounded-full bg-purple-500/20 blur-3xl"></div>
+        <div className="animate-pulse-glow absolute left-1/2 top-20 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/30 blur-3xl"></div>
+<div className="animate-pulse-glow animation-delay-400 absolute right-10 top-40 h-72 w-72 rounded-full bg-purple-500/20 blur-3xl"></div>
+        {/* <div className="absolute left-1/2 top-20 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/30 blur-3xl"></div> */}
+        {/* <div className="absolute right-10 top-40 h-72 w-72 rounded-full bg-purple-500/20 blur-3xl"></div> */}
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
-          <div>
+          <div className="animate-fade-up">
             <div className="mb-6 inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-blue-200">
               Earn online with simple daily tasks
             </div>
@@ -149,7 +151,7 @@ const Home = () => {
           </div>
 
           {/* HERO CARD */}
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
+          <div className="nimate-float-slow rounded-3xl border border-white/10 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
             <div className="rounded-2xl bg-slate-900 p-6">
               <div className="mb-6 flex items-center justify-between">
                 <div>
@@ -198,7 +200,8 @@ const Home = () => {
               return (
                 <div
                   key={feature.title}
-                  className="rounded-3xl border border-white/10 bg-white/[0.06] p-6 transition hover:-translate-y-2 hover:bg-white/10"
+                  className="animate-fade-up rounded-3xl border border-white/10 bg-white/[0.06] p-6 transition duration-300 hover:-translate-y-2 hover:bg-white/10 hover:shadow-2xl hover:shadow-blue-500/10"
+                  // className="rounded-3xl border border-white/10 bg-white/[0.06] p-6 transition hover:-translate-y-2 hover:bg-white/10"
                 >
                   <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/20">
                     <Icon className="h-7 w-7 text-blue-300" />
@@ -215,7 +218,8 @@ const Home = () => {
 
       {/* CTA */}
       <section className="px-6 pb-20">
-        <div className="mx-auto max-w-6xl rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-10 text-center shadow-2xl">
+        <div className="animate-fade-up mx-auto max-w-6xl rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-10 text-center shadow-2xl">
+        {/* <div className="mx-auto max-w-6xl rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-10 text-center shadow-2xl"> */}
           <h2 className="text-3xl font-black md:text-5xl">
             Ready to Start Earning?
           </h2>
