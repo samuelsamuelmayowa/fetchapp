@@ -65,10 +65,10 @@ const Home = () => {
                   Login
                 </Link> */}
                 <Link
-                  to="/signup"
+                  to="/login"
                   className="rounded-xl bg-white px-5 py-2 text-sm font-bold text-slate-950 shadow-lg hover:bg-slate-200"
                 >
-                  Sign Up
+                  Login 
                 </Link>
               </div>
 
