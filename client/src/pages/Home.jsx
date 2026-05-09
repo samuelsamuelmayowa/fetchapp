@@ -10,6 +10,7 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const features = [
   {
@@ -36,65 +37,9 @@ const features = [
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
       {/* NAVBAR */}
-      <Disclosure as="nav" className="fixed top-0 z-50 w-full border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
-        {({ open }) => (
-          <>
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-              <Link to="/" className="flex items-center gap-3">
-                <img
-                  src="/image/img/light bg.svg"
-                  alt="PPT Logo"
-                  className="h-10 w-10 rounded-xl bg-white p-1"
-                />
-                <span className="text-xl font-bold tracking-tight">PPT</span>
-              </Link>
-
-              <div className="hidden items-center gap-8 md:flex">
-                <Link to="/" className="text-sm text-slate-300 hover:text-white">Home</Link>
-                <Link to="/dashboard" className="text-sm text-slate-300 hover:text-white">Dashboard</Link>
-                <Link to="/read-more" className="text-sm text-slate-300 hover:text-white">Read More</Link>
-              </div>
-
-              <div className="hidden items-center gap-3 md:flex">
-                {/* <Link
-                  to="/login"
-                  className="rounded-xl px-5 py-2 text-sm font-semibold text-slate-200 hover:bg-white/10"
-                >
-                  Login
-                </Link> */}
-                <Link
-                  to="/login"
-                  className="rounded-xl bg-white px-5 py-2 text-sm font-bold text-slate-950 shadow-lg hover:bg-slate-200"
-                >
-                  Login 
-                </Link>
-              </div>
-
-              <Disclosure.Button className="md:hidden">
-                {open ? <XMarkIcon className="h-7 w-7" /> : <Bars3Icon className="h-7 w-7" />}
-              </Disclosure.Button>
-            </div>
-
-            <Disclosure.Panel className="border-t border-white/10 px-6 py-4 md:hidden">
-              <div className="flex flex-col gap-4">
-                <Link to="/">Home</Link>
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="/read-more">Read More</Link>
-                {/* <Link to="/login">Login</Link> */}
-                <Link
-                  to="/signup"
-                  className="rounded-xl bg-white px-5 py-3 text-center font-bold text-slate-950"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-
+    <Navbar/>
       {/* HERO */}
       <section className="relative overflow-hidden px-6 pt-36 pb-24">
         <div className="animate-pulse-glow absolute left-1/2 top-20 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/30 blur-3xl"></div>
@@ -112,7 +57,7 @@ const Home = () => {
               Earn Money by Watching Videos & Completing Tasks
             </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">
               PPT helps users earn points from simple activities like watching videos,
               following pages, subscribing, and completing brand tasks.
             </p>
@@ -137,7 +82,7 @@ const Home = () => {
             <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
               <div>
                 <h3 className="text-2xl font-black">10k+</h3>
-                <p className="text-sm text-slate-400">Tasks</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Tasks</p>
               </div>
               <div>
                 <h3 className="text-2xl font-black">24/7</h3>
@@ -200,7 +145,8 @@ const Home = () => {
               return (
                 <div
                   key={feature.title}
-                  className="animate-fade-up rounded-3xl border border-white/10 bg-white/[0.06] p-6 transition duration-300 hover:-translate-y-2 hover:bg-white/10 hover:shadow-2xl hover:shadow-blue-500/10"
+                  className="animate-fade-up rounded-3xl border border-slate-200 bg-slate-50 p-6 transition duration-300 hover:-translate-y-2 hover:bg-white hover:shadow-2xl dark:border-white/10 dark:bg-white/[0.06] dark:hover:bg-white/10 dark:hover:shadow-blue-500/10"
+                  // className="animate-fade-up rounded-3xl border border-white/10 bg-white/[0.06] p-6 transition duration-300 hover:-translate-y-2 hover:bg-white/10 hover:shadow-2xl hover:shadow-blue-500/10"
                   // className="rounded-3xl border border-white/10 bg-white/[0.06] p-6 transition hover:-translate-y-2 hover:bg-white/10"
                 >
                   <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/20">

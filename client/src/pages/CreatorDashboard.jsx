@@ -4,6 +4,7 @@ import {
   CreditCardIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
+import Navbar from "../components/Navbar";
 
 const plans = [
   { name: "Standard", discount: 0, monthly: 0, label: "No discount" },
@@ -82,6 +83,7 @@ export default function CreatorDashboard() {
 
   return (
     <section className="min-h-screen bg-gray-50 px-4 py-8">
+      <Navbar/>
       <div className="mx-auto max-w-6xl space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">

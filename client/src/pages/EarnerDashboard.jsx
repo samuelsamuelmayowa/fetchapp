@@ -5,6 +5,7 @@ import {
   UserIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
+import Navbar from "../components/Navbar";
 
 const demoTasks = [
   {
@@ -79,7 +80,7 @@ export default function EarnerDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="sticky top-0 z-50 border-b bg-white">
+      {/* <nav className="sticky top-0 z-50 border-b bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <a href="/" className="flex items-center gap-2">
             <img src="/image/img/light bg.svg" alt="Logo" className="h-9" />
@@ -154,7 +155,9 @@ export default function EarnerDashboard() {
             <Bars3Icon className="h-7 w-7" />
           </button>
         </div>
-      </nav>
+      </nav> */}
+
+      <Navbar/>
 
       <main className="mx-auto max-w-5xl space-y-6 px-4 py-10">
         <button

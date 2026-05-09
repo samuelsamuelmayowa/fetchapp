@@ -6,11 +6,13 @@ import CreatorSignup from "./components/CreatorSignup";
 import Login from "./components/Login";
 import EarnerDashboard from "./pages/EarnerDashboard";
 import CreatorDashboard from "./pages/CreatorDashboard";
-
+// import { Toaster } from "sonner";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+              {/* <Toaster  richColors position="top-right" /> */}
+
         <Route path="/" element={<Home />} />
 
         <Route path="/signup" element={<Signup />} />
