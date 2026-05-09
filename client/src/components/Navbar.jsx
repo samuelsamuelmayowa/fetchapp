@@ -73,12 +73,12 @@ const toggleTheme = () => {
         <div className="hidden items-center gap-4 md:flex">
           {!user ? (
             <>
-              <Link
+              {/* <Link
                 to="/form"
                 className="rounded-lg bg-black px-4 py-2 text-sm text-white"
               >
                 Sign Up
-              </Link>
+              </Link> */}
 
               <Link to="/login" className="rounded-lg border px-4 py-2 text-sm">
                 Login
