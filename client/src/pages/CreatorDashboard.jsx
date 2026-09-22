@@ -1,15 +1,21 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CheckCircleIcon,
   CreditCardIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
 import Navbar from "../components/Navbar";
+import axios from "axios";
 
 const plans = [
   { name: "Standard", discount: 0, monthly: 0, label: "No discount" },
   { name: "Premium", discount: 10, monthly: 20, label: "10% discount" },
-  { name: "Diamond", discount: 20, monthly: 30, label: "20% discount + top priority" },
+  {
+    name: "Diamond",
+    discount: 20,
+    monthly: 30,
+    label: "20% discount + top priority",
+  },
 ];
 
 const platforms = [
@@ -25,6 +31,8 @@ const platforms = [
 ];
 
 export default function CreatorDashboard() {
+  const API_URL = import.meta.env.VITE_PRODUCTION_API_URL;
+
   const [selectedPlan, setSelectedPlan] = useState(plans[0]);
   const [creatorName, setCreatorName] = useState("");
   const [platform, setPlatform] = useState("facebook_follow");
@@ -42,48 +50,55 @@ export default function CreatorDashboard() {
     return baseCost - discountAmount;
   }, [actionCount, selectedPlatform, selectedPlan]);
 
-  const handleCreateTask = () => {
-    if (!creatorName.trim() || !socialLink.trim()) {
-      alert("Please enter creator name and social link");
-      return;
-    }
+  const fetchCreatorTasks = async () => {
+    const res = await axios.get(`${API_URL}creator/tasks`, {
+      withCredentials: true,
+    });
 
-    if (Number(creatorBalance) < totalCost) {
-      alert("Insufficient balance");
-      return;
-    }
-
-    const newTask = {
-      id: Date.now(),
-      creatorName,
-      platform: selectedPlatform.label,
-      actionCount,
-      socialLink,
-      plan: selectedPlan.name,
-      cost: totalCost,
-      status: "Active",
-      date: new Date().toLocaleString(),
-    };
-
-    setTasks((prev) => [newTask, ...prev]);
-
-    setPayments((prev) => [
-      {
-        id: Date.now() + 1,
-        amount: totalCost,
-        plan: selectedPlan.name,
-        date: new Date().toLocaleString(),
-      },
-      ...prev,
-    ]);
-
-    setCreatorBalance((prev) => Number(prev) - totalCost);
-    setSocialLink("");
+    setTasks(res.data);
   };
 
+  const fetchCreatorPayments = async () => {
+    const res = await axios.get(`${API_URL}api/creator/payments`, {
+      withCredentials: true,
+    });
+
+    setPayments(res.data);
+  };
+  const handleCreateTask = async () => {
+    try {
+      const res = await axios.post(
+        `${API_URL}creator/tasks`,
+        {
+          platform,
+          actionCount,
+          socialLink,
+          plan: selectedPlan.name,
+          paymentMethod: "card",
+        },
+        {
+          withCredentials: true,
+        },
+      );
+
+      alert(res.data.message);
+
+      setSocialLink("");
+
+      fetchCreatorTasks();
+      fetchCreatorPayments();
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to create task");
+    }
+  };
+
+  useEffect(() => {
+    fetchCreatorTasks();
+    fetchCreatorPayments();
+  }, []);
   return (
     <section className="min-h-screen bg-gray-50 px-4 py-8">
-      <Navbar/>
+      <Navbar />
       <div className="mx-auto max-w-6xl space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">
@@ -130,11 +145,21 @@ export default function CreatorDashboard() {
             </div>
 
             <div className="grid gap-3 text-sm md:grid-cols-5">
-              <p><strong>Plan:</strong> {selectedPlan.name}</p>
-              <p><strong>Discount:</strong> {selectedPlan.discount}%</p>
-              <p><strong>Monthly:</strong> ${selectedPlan.monthly}</p>
-              <p><strong>6 Months:</strong> ${selectedPlan.monthly * 6}</p>
-              <p><strong>12 Months:</strong> ${selectedPlan.monthly * 12}</p>
+              <p>
+                <strong>Plan:</strong> {selectedPlan.name}
+              </p>
+              <p>
+                <strong>Discount:</strong> {selectedPlan.discount}%
+              </p>
+              <p>
+                <strong>Monthly:</strong> ${selectedPlan.monthly}
+              </p>
+              <p>
+                <strong>6 Months:</strong> ${selectedPlan.monthly * 6}
+              </p>
+              <p>
+                <strong>12 Months:</strong> ${selectedPlan.monthly * 12}
+              </p>
             </div>
           </div>
         </div>

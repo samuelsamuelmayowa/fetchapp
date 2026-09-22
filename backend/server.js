@@ -7,13 +7,15 @@ const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
 dotenv.config();
 const { sequelize } = require("./db.js");
+const  creatorRoutes = require("./routes/creatorRoutes.js")
 const  userroutes= require("./routes/userroutes");
-
+console.log('new form ')
 const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   "https://yourfrontend.com",
+   
   "https://ppt-beryl.vercel.app",
   "https://www.yourfrontend.com",
 ];
@@ -54,7 +56,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", userroutes);
-
+app.use("/api/creator", creatorRoutes);
 const PORT = process.env.PORT || 5000;
 
 sequelize
