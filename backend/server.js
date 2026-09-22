@@ -1,74 +1,10 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const rateLimit = require("express-rate-limit");
-const dotenv = require("dotenv");
-dotenv.config();
-const { sequelize } = require("./db.js");
-const  creatorRoutes = require("./routes/creatorRoutes.js")
-const  userroutes= require("./routes/userroutes");
-console.log('new form ')
-const app = express();
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:3000",
-  "https://yourfrontend.com",
-   
-  "https://ppt-beryl.vercel.app",
-  "https://www.yourfrontend.com",
-];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (postman/mobile apps)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
-
-app.use(helmet());
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(cookieParser());
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 100,
-  message: "Too many requests, please try again later",
-});
-
-app.use(limiter);
-
-app.get("/", (req, res) => {
-  res.json({
-    message: "Backend API is running",
-  });
-});
-
-app.use("/api/auth", userroutes);
-app.use("/api/creator", creatorRoutes);
-const PORT = process.env.PORT || 5000;
-
-sequelize
-  .sync({ alter: true })
-  .then(() => {
-    console.log("✅ Database synced");
-
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("❌ Server failed:", err);
-    process.exit(1);
-  });
+﻿const app = require('./app');
+const { sequelize } = require('./models');
+async function start() {
+  if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) throw new Error('JWT_SECRET must contain at least 32 characters.');
+  if (process.env.NODE_ENV === 'production' && !process.env.FRONTEND_URL) throw new Error('FRONTEND_URL is required.');
+  await sequelize.authenticate();
+  return app.listen(process.env.PORT || 5000, '0.0.0.0', () => console.log('PROMOTtv API listening'));
+}
+if (require.main === module) start().catch(error => { console.error('Startup failed:', error.message); process.exit(1); });
+module.exports = { app, start };

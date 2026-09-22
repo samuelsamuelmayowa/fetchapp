@@ -1,154 +1,47 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
-
-
-const createToken = (user) => {
-  return jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-};
-
-const cookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-};
-
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { randomBytes } = require('crypto');
+const { User } = require('../models');
+const { assert, url, publicUser } = require('../lib/rules');
+const cookie = { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', path: '/' };
+function session(res, user, status = 200) {
+  const token = jwt.sign({ id: user.id, version: user.tokenVersion }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  res.cookie('token', token, { ...cookie, maxAge: 86400000 });
+  res.status(status).json({ user: publicUser(user), token });
+}
 exports.signup = async (req, res) => {
-  try {
-    const {
-      fullName,
-      email,
-      password,
-      country,
-      role,
-      facebookLink,
-      youtubeLink,
-      instagramLink,
-      tiktokLink,
-    } = req.body;
-
-    if (!fullName || !email || !password || !role) {
-      return res.status(400).json({
-        message: "Full name, email, password and role are required",
-      });
-    }
-
-    if (!["earner", "creator"].includes(role)) {
-      return res.status(400).json({
-        message: "Invalid role",
-      });
-    }
-
-    const existingUser = await User.findOne({ where: { email } });
-
-    if (existingUser) {
-      return res.status(409).json({
-        message: "Email already exists",
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    const user = await User.create({
-      fullName,
-      email,
-      password: hashedPassword,
-      country,
-      role,
-      facebookLink,
-      youtubeLink,
-      instagramLink,
-      tiktokLink,
-    });
-
-    const token = createToken(user);
-
-    res.cookie("token", token, cookieOptions);
-
-    return res.status(201).json({
-      message: "Signup successful",
-      user: {
-        id: user.id,
-        fullName: user.fullName,
-        email: user.email,
-        role: user.role,
-        country: user.country,
-      },
-    });
-  } catch (error) {
-    console.error("Signup error:", error);
-    return res.status(500).json({
-      message: "Server error during signup",
-    });
+  const { fullName, password, country, role, referralCode } = req.body;
+  const email = String(req.body.email || '').trim().toLowerCase();
+  assert(typeof fullName === 'string' && fullName.trim().length >= 2 && fullName.length <= 100, 'Enter your full name.');
+  assert(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254, 'Enter a valid email.');
+  assert(typeof password === 'string' && password.length >= 8 && Buffer.byteLength(password) <= 72, 'Use at least 8 characters (maximum 72 bytes).');
+  assert(['earner', 'creator'].includes(role), 'Invalid account type.');
+  const socials = {};
+  for (const key of ['facebookLink', 'youtubeLink', 'instagramLink', 'tiktokLink']) {
+    const value = String(req.body[key] || '').trim();
+    assert(!value || (value.length <= 255 && url(value)), 'Enter valid social profile URLs.'); socials[key] = value || null;
   }
+  assert(!(await User.findOne({ where: { email } })), 'An account already uses this email.', 409);
+  const referrer = referralCode ? await User.findOne({ where: { referralCode: String(referralCode), role: 'earner', suspended: false } }) : null;
+  assert(!referralCode || referrer, 'Referral code not found.');
+  const user = await User.create({ fullName: fullName.trim(), email, password: await bcrypt.hash(password, 12), country: String(country || '').slice(0, 100), role, ...socials, referralCode: randomBytes(8).toString('hex'), referredBy: referrer?.id });
+  session(res, user, 201);
 };
-
 exports.login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({
-        message: "Email and password are required",
-      });
-    }
-
-    const user = await User.findOne({ where: { email } });
-
-    if (!user) {
-      return res.status(401).json({
-        message: "Invalid email or password",
-      });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({
-        message: "Invalid email or password",
-      });
-    }
-
-    const token = createToken(user);
-
-    res.cookie("token", token, cookieOptions);
-
-    return res.status(200).json({
-      message: "Login successful",
-      user: {
-        id: user.id,
-        fullName: user.fullName,
-        email: user.email,
-        role: user.role,
-      },
-    });
-  } catch (error) {
-    console.error("Login error:", error);
-    return res.status(500).json({
-      message: "Server error during login",
-    });
-  }
+  const user = await User.findOne({ where: { email: String(req.body.email || '').trim().toLowerCase() } });
+  assert(typeof req.body.password === 'string' && user && await bcrypt.compare(req.body.password, user.password), 'Invalid email or password.', 401);
+  assert(!user.suspended, 'Your account is suspended.', 403);
+  session(res, user);
 };
-
-exports.me = async (req, res) => {
-  return res.status(200).json({
-    user: req.user,
-  });
-};
-
+exports.me = (req, res) => res.json({ user: publicUser(req.user) });
 exports.logout = async (req, res) => {
-  res.clearCookie("token", cookieOptions);
-
-  return res.status(200).json({
-    message: "Logout successful",
-  });
+  await req.user.increment('tokenVersion');
+  res.clearCookie('token', cookie).json({ message: 'Signed out.' });
+};
+exports.changePassword = async (req, res) => {
+  const { currentPassword, password } = req.body;
+  assert(typeof currentPassword === 'string' && await bcrypt.compare(currentPassword, req.user.password), 'Current password is incorrect.');
+  assert(typeof password === 'string' && password.length >= 8 && Buffer.byteLength(password) <= 72, 'Use at least 8 characters (maximum 72 bytes).');
+  await req.user.update({ password: await bcrypt.hash(password, 12), tokenVersion: req.user.tokenVersion + 1 });
+  session(res, req.user);
 };

@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../db.js");
+const { sequelize } = require("../db.js");
 
 const Transaction = sequelize.define("Transaction", {
   userId: {
@@ -9,10 +9,11 @@ const Transaction = sequelize.define("Transaction", {
   },
 
   amount: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: DataTypes.DECIMAL(18, 6),
     allowNull: false,
   },
 
+  reference: { type: DataTypes.STRING, unique: true },
   note: {
     type: DataTypes.STRING,
   },

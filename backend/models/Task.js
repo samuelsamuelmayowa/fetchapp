@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../db.js");
+const { sequelize } = require("../db.js");
 
 const Task = sequelize.define("Task", {
   title: {
@@ -18,7 +18,7 @@ const Task = sequelize.define("Task", {
   },
 
   budget: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: DataTypes.DECIMAL(18, 6),
     allowNull: false,
   },
 
@@ -60,7 +60,7 @@ const Task = sequelize.define("Task", {
 
   earnerSharePercent: {
     type: DataTypes.DECIMAL(5, 2),
-    defaultValue: 0.4,
+    defaultValue: 0.5,
     field: "earner_share_percent",
   },
 

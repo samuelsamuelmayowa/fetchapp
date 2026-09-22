@@ -1,52 +1,9 @@
-const dotenv = require("dotenv");
-dotenv.config();
-
-const { Sequelize } = require("sequelize");
-const aa = 1
-// 🔒 HARD SAFETY CHECK — DO NOT REMOVE
-if (
-  process.env.NODE_ENV !== "production" &&
-  process.env.DB_NAME &&
-  /prod/i.test(process.env.DB_NAME)
-) {
-  throw new Error(
-    "❌ BLOCKED: Non-production environment tried to connect to PROD database"
-  );
-}
-
-console.log("🔎 ENV:", process.env.NODE_ENV);
-console.log("🔎 DB:", process.env.DB_NAME);
-
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASS,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
-    dialect: "mysql",
-    dialectModule: require("mysql2"),
-    logging: false,
-   
-  pool: {
-    max: 20,          // 🔼 increase
-    min: 0,
-    acquire: 60000,   // 🔼 wait longer
-    idle: 10000,
-  },
-    dialectOptions: {
-      ssl: false,
-    },
-  }
-);
-
-sequelize
-  .authenticate()
-  .then(() => console.log("✅ Database connected"))
-  .catch((err) => {
-    console.error("❌ Unable to connect:", err);
-    process.exit(1); // fail fast
-  });
-
+require('dotenv').config();
+const { Sequelize } = require('sequelize');
+if (process.env.NODE_ENV !== 'production' && /prod/i.test(process.env.DB_NAME || '')) throw new Error('Non-production process cannot connect to a production database.');
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+  host: process.env.DB_HOST || 'localhost', port: Number(process.env.DB_PORT || 3306), dialect: 'mysql', logging: false,
+  pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
+  dialectOptions: process.env.DB_SSL === 'true' ? { ssl: { rejectUnauthorized: true, ...(process.env.DB_SSL_CA ? { ca: process.env.DB_SSL_CA.replace(/\\n/g, '\n') } : {}) } } : {},
+});
 module.exports = { sequelize };
-

@@ -8,7 +8,8 @@ const {
 } = require("../controllers/creatorController");
 
 // const authMiddleware = require("../middleware/authMiddleware");
-const { protect } = require("../middlewares/authMiddleware");
+const { protect, allow } = require("../middlewares/authMiddleware");
+router.use(protect, allow('creator'));
 router.post("/tasks", protect, createTask);
 router.get("/tasks", protect, getCreatorTasks);
 router.get("/payments", protect, getCreatorPayments);

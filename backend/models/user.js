@@ -32,7 +32,7 @@ const User = sequelize.define(
     },
 
     role: {
-      type: DataTypes.ENUM("earner", "creator"),
+      type: DataTypes.ENUM("earner", "creator", "moderator", "finance", "manager"),
       allowNull: false,
     },
     plan: {
@@ -41,7 +41,7 @@ const User = sequelize.define(
 },
 
 balance: {
-  type: DataTypes.DECIMAL(10, 2),
+  type: DataTypes.DECIMAL(18, 6),
   defaultValue: 0.0,
 },
 
@@ -55,6 +55,11 @@ verified: {
   defaultValue: false,
 },
 
+    referralCode: { type: DataTypes.STRING, unique: true },
+    referredBy: DataTypes.INTEGER,
+    penaltyThrough: DataTypes.DATEONLY,
+    tokenVersion: { type: DataTypes.INTEGER, defaultValue: 0 },
+    planExpiresAt: DataTypes.DATE,
     facebookLink: DataTypes.STRING,
     youtubeLink: DataTypes.STRING,
     instagramLink: DataTypes.STRING,

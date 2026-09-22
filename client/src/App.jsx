@@ -1,76 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Signup from "./components/Signup";
-import EarnerSignup from "./components/EarnerSignup";
-import CreatorSignup from "./components/CreatorSignup";
-import Login from "./components/Login";
-import EarnerDashboard from "./pages/EarnerDashboard";
-import CreatorDashboard from "./pages/CreatorDashboard";
-// import { Toaster } from "sonner";
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-              {/* <Toaster  richColors position="top-right" /> */}
-
-        <Route path="/" element={<Home />} />
-
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signup/earner" element={<EarnerSignup />} />
-        <Route path="/signup/creator" element={<CreatorSignup />} />
-
-        <Route path="/login" element={<Login />} />
-
-
-  <Route path="/earner-dashboard" element={<EarnerDashboard />} />
-  <Route path="/creator-dashboard" element={<CreatorDashboard />} />
-      </Routes>
-    </BrowserRouter>
-  );
+﻿import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import Home from './pages/Landing';
+import Auth from './pages/Auth';
+import Workspace from './pages/Workspace';
+import Info from './pages/Info';
+export default function App() {
+  return <BrowserRouter><Toaster richColors position="top-right"/><Routes>
+    <Route path="/" element={<Home/>}/><Route path="/login" element={<Auth/>}/>
+    <Route path="/signup" element={<Auth signup/>}/><Route path="/signup/earner" element={<Auth signup role="earner"/>}/><Route path="/signup/creator" element={<Auth signup role="creator"/>}/>
+    <Route path="/earner-dashboard" element={<Workspace role="earner"/>}/><Route path="/creator-dashboard" element={<Workspace role="creator"/>}/><Route path="/admin" element={<Workspace role="staff"/>}/>
+    <Route path="/faq" element={<Info/>}/><Route path="/read-more" element={<Info/>}/><Route path="*" element={<Info missing/>}/>
+  </Routes></BrowserRouter>;
 }
-
-export default App;
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Home from "./pages/Home";
-// import Signup from "./components/Signup";
-// import EarnerSignup from "./components/EarnerSignup";
-// import CreatorSignup from "./components/CreatorSignup";
-
-// function App() {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" element={<Home />} />
-
-//         {/* Signup flow */}
-//         <Route path="/signup" element={<Signup />} />
-//         <Route path="/signup/earner" element={<EarnerSignup />} />
-//         <Route path="/signup/creator" element={<CreatorSignup />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
-// // import { BrowserRouter, Routes, Route } from "react-router-dom";
-// // import Home from "./pages/Home";
-// // import Signup from "./components/Signup";
-
-
-// // function App() {
-// //   return (
-// //     <BrowserRouter>
-
-
-// //       <Routes>
-// //          <Route path="/signup" element={<Signup/>} />
-// //         <Route path="/" element={<Home />} />
-      
-// //       </Routes>
-
-// //       {/* <Footer /> */}
-// //     </BrowserRouter>
-// //   );
-// // }
-
-// // export default App;
