@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const { Sequelize } = require("sequelize");
-
+const aa = 1
 // 🔒 HARD SAFETY CHECK — DO NOT REMOVE
 if (
   process.env.NODE_ENV !== "production" &&
