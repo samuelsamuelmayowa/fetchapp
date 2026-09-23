@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Op } = require('sequelize');
 const { sequelize, User, Task, Transaction, Submission, Withdrawal, Audit } = require('../models');
 const { protect, allow } = require('../middlewares/authMiddleware');
-const { assert, url, money, publicUser, pricing, plans, activePlan, quote } = require('../lib/rules');
+const { assert, url, money, publicUser, pricing, plans, activePlan, quote, creatorPaymentsPaused } = require('../lib/rules');
 const { applyInactivity } = require('../lib/inactivity');
 router.use(protect);
 router.get('/overview', async (req, res) => {
@@ -15,7 +15,7 @@ router.get('/overview', async (req, res) => {
     Submission.findAll({ where: { userId: req.user.id }, order: [['createdAt', 'DESC']], limit: 200 }),
     Withdrawal.findAll({ where: { userId: req.user.id }, order: [['createdAt', 'DESC']], limit: 100 }),
   ]);
-  res.json({ user: publicUser(req.user), transactions, referrals, submissions, withdrawals, pricing, plans, activePlan: activePlan(req.user), paymentsEnabled: Boolean(process.env.FLW_SECRET_KEY) });
+  res.json({ user: publicUser(req.user), transactions, referrals, submissions, withdrawals, pricing, plans, activePlan: activePlan(req.user), paymentsEnabled: Boolean(process.env.FLW_SECRET_KEY), creatorPaymentsPaused: creatorPaymentsPaused() });
 });
 router.patch('/profile', async (req, res) => {
   const changes = {};
@@ -90,10 +90,10 @@ router.post('/admin/submissions/:id/review', allow('moderator', 'manager'), asyn
     const user = await User.findByPk(candidate.userId, { transaction, lock: transaction.LOCK.UPDATE });
     const submission = await Submission.findByPk(candidate.id, { transaction, lock: transaction.LOCK.UPDATE });
     assert(submission.status === 'pending', 'This submission was already reviewed.', 409);
-    if (approved) {
+    if (approved && Number(submission.reward) > 0) {
       await user.update({ balance: money(Number(user.balance) + Number(submission.reward)) }, { transaction });
       await Transaction.create({ userId: user.id, amount: submission.reward, type: 'credit', method: 'wallet', note: 'Approved task #' + task.id, reference: 'submission:' + submission.id }, { transaction });
-    } else await task.increment('remaining', { transaction });
+    } else if (!approved) await task.increment('remaining', { transaction });
     await submission.update({ status: req.body.status, reviewedBy: req.user.id }, { transaction });
     await Audit.create({ actorId: req.user.id, action: 'submission.' + req.body.status, targetId: submission.id }, { transaction });
   }); res.json({ message: 'Submission reviewed.' });

@@ -11,6 +11,7 @@ test('MySQL-backed member, campaign, moderation, wallet and security workflows',
   process.env.DB_NAME = database;
   process.env.JWT_SECRET = 'integration-test-secret-never-use-in-production';
   process.env.NODE_ENV = 'test'; process.env.FLW_SECRET_KEY = 'test-only';
+  process.env.CREATOR_PAYMENTS_PAUSED = 'false';
   process.env.FRONTEND_URL = 'http://localhost:5173'; process.env.ALLOWED_ORIGINS = 'http://localhost:5173';
   const { sequelize, User, Task, Transaction, Submission, Withdrawal, Payment } = require('../models');
   const bcrypt = require('bcryptjs'); const jwt = require('jsonwebtoken');
@@ -111,6 +112,25 @@ test('MySQL-backed member, campaign, moderation, wallet and security workflows',
     assert.equal((await request('/auth/logout', {}, changed.data.token)).status, 200);
     assert.equal((await request('/auth/me', null, changed.data.token, 'GET')).status, 401);
     assert.equal(await Task.count(), 1); assert.equal(await Submission.count(), 1); assert.equal(await Withdrawal.count(), 1);
+    const testCreator = await signup('unfunded@example.test', 'creator');
+    const testEarner = await signup('tester@example.test', 'earner', { youtubeLink: 'https://youtube.com/@tester' });
+    assert.equal((await request('/creator/tasks', { ...body, testing: true }, testCreator.token)).status, 400, 'Request body cannot bypass payment.');
+    process.env.CREATOR_PAYMENTS_PAUSED = 'true';
+    const freeCampaign = await request('/creator/tasks', body, testCreator.token);
+    assert.equal(freeCampaign.status, 201);
+    assert.equal(Number(freeCampaign.data.budget), 0);
+    assert.match(freeCampaign.data.title, /^\[TEST\]/);
+    assert.equal(Number((await User.findByPk(testCreator.user.id)).balance), 0);
+    assert.equal(await Transaction.count({ where: { userId: testCreator.user.id } }), 0);
+    assert.equal((await request('/creator/tasks', { ...body, actionCount: -1 }, testCreator.token)).status, 400);
+    const testProof = await request('/workspace/tasks/' + freeCampaign.data.id + '/submit', { proof: 'Completed the test video with my account.' }, testEarner.token);
+    assert.equal(testProof.status, 201); assert.equal(Number(testProof.data.reward), 0);
+    process.env.CREATOR_PAYMENTS_PAUSED = 'false';
+    assert.equal((await request('/workspace/admin/submissions/' + testProof.data.id + '/review', { status: 'approved' }, staff.moderator)).status, 200);
+    assert.equal(Number((await User.findByPk(testEarner.user.id)).balance), 0, 'Test approval never credits cash after payment is restored.');
+    assert.equal(await Transaction.count({ where: { userId: testEarner.user.id } }), 0);
+    assert.equal((await Task.findByPk(freeCampaign.data.id)).remaining, 999);
+    assert.equal((await request('/creator/tasks', body, testCreator.token)).status, 400, 'Disabling the switch restores payment.');
   } finally {
     global.fetch = realFetch;
     if (server) await new Promise(resolve => server.close(resolve));

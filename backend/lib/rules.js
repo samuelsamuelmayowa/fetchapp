@@ -11,4 +11,5 @@ function quote(platform, count, plan = 'Standard') {
 }
 const publicUser = user => { const safe = user.toJSON(); delete safe.password; delete safe.tokenVersion; return safe; };
 const activePlan = user => user.planExpiresAt && new Date(user.planExpiresAt) > new Date() ? user.plan : 'Standard';
-module.exports = { pricing, plans, money, assert, url, quote, publicUser, activePlan };
+const creatorPaymentsPaused = () => process.env.CREATOR_PAYMENTS_PAUSED === 'true';
+module.exports = { pricing, plans, money, assert, url, quote, publicUser, activePlan, creatorPaymentsPaused };

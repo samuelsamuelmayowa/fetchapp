@@ -1,3 +1,4 @@
+import usePageMotion from '../lib/usePageMotion';
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { getNames } from 'country-list';
@@ -9,6 +10,7 @@ export default function Auth({ signup = false, role }) {
   const navigate = useNavigate(); const [params] = useSearchParams();
   const [error, setError] = useState(''); const [busy, setBusy] = useState(false); const [visible, setVisible] = useState(false);
   const chooser = signup && !role;
+  const motionRoot = usePageMotion('auth', String(signup) + (role || ''));
   async function submit(event) {
     event.preventDefault(); setError(''); setBusy(true);
     try { const body = Object.fromEntries(new FormData(event.currentTarget)); if (signup) body.role = role;
@@ -16,7 +18,7 @@ export default function Auth({ signup = false, role }) {
       saveSession(data); navigate(dashboard(data.user.role), { replace: true });
     } catch (error) { setError(message(error)); } finally { setBusy(false); }
   }
-  return <main className="auth-layout"><aside className="auth-story"><Brand/><div><span className="eyebrow">YOUR NEXT CHAPTER STARTS HERE</span><h1>Small actions.<br/>Bigger<br/><em>possibilities.</em></h1><p>A place for curious people and ambitious creators to move forward, together.</p><div className="auth-benefit"><CheckCircleIcon/> Discover something new every day</div><div className="auth-benefit"><CheckCircleIcon/> Keep your progress in one place</div></div><span className="muted">Made for a connected world.</span></aside><section className="auth-panel"><Link to="/" className="text-link">← Back to home</Link><div className="auth-form"><span className="eyebrow">{signup ? 'JOIN PROMOTtv' : 'GOOD TO SEE YOU AGAIN'}</span><h2>{chooser ? 'Make it your own.' : signup ? 'Your ' + role + ' journey starts here.' : 'Welcome back.'}</h2><p className="muted">{chooser ? 'Choose what brings you here.' : signup ? 'A few details, and you are ready to begin.' : 'Sign in to pick up where you left off.'}</p>
+  return <main ref={motionRoot} className="auth-layout"><aside className="auth-story"><Brand/><div><span className="eyebrow">YOUR NEXT CHAPTER STARTS HERE</span><h1>Small actions.<br/>Bigger<br/><em>possibilities.</em></h1><p>A place for curious people and ambitious creators to move forward, together.</p><div className="auth-benefit"><CheckCircleIcon/> Discover something new every day</div><div className="auth-benefit"><CheckCircleIcon/> Keep your progress in one place</div></div><span className="muted">Made for a connected world.</span></aside><section className="auth-panel"><Link to="/" className="text-link">← Back to home</Link><div className="auth-form"><span className="eyebrow">{signup ? 'JOIN PROMOTtv' : 'GOOD TO SEE YOU AGAIN'}</span><h2>{chooser ? 'Make it your own.' : signup ? 'Your ' + role + ' journey starts here.' : 'Welcome back.'}</h2><p className="muted">{chooser ? 'Choose what brings you here.' : signup ? 'A few details, and you are ready to begin.' : 'Sign in to pick up where you left off.'}</p>
     {chooser ? <div className="role-options"><Link to={'/signup/earner' + (params.get('ref') ? '?ref=' + encodeURIComponent(params.get('ref')) : '')}><span className="role-emoji">↗</span><h3>I want to earn</h3><p>Discover tasks and earn rewards for approved work.</p><ArrowRightIcon/></Link><Link to="/signup/creator"><span className="role-emoji">◎</span><h3>I want to grow</h3><p>Create campaigns and bring your content to more people.</p><ArrowRightIcon/></Link></div> : <form onSubmit={submit}>
       {error && <div className="notice error" role="alert">{error}</div>}
       {signup && <label>Full name<input name="fullName" autoComplete="name" required minLength={2} maxLength={100} placeholder="Your full name"/></label>}

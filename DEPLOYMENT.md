@@ -37,6 +37,8 @@ Sign-in uses an HttpOnly cookie plus a tab-scoped bearer token for browsers that
 
 ## Payments and staff
 
+For temporary campaign testing, set `CREATOR_PAYMENTS_PAUSED=true` on the backend and restart/redeploy. Creators can publish without a funded wallet. These campaigns are labelled `[TEST]`, have zero budget and zero cash rewards, and support the normal earner submission and staff review flow. Existing paid campaigns and balances are unchanged. Set the flag to `false` to restore payment requirements; previously created test campaigns remain unpaid. No database migration is needed for this switch.
+
 Set `FLW_SECRET_KEY` only on the backend. Start with a Flutterwave test key and verify that your merchant account supports USD checkout. Creator wallet funding and 30-day memberships use Flutterwave Standard. After checkout, the creator clicks **Verify payment** on the return screen. The API checks payment status, reference, currency and exact amount with Flutterwave before crediting; repeat verification is idempotent. Membership receipts appear in transaction history but do not increase wallet balance.
 
 The current flow depends on a successful browser return and verification. A creator can also verify a transaction ID in Wallet. Automatic webhook reconciliation is not implemented. Reconcile pending payments with Flutterwave before production launch, especially for customers who close checkout before returning.
