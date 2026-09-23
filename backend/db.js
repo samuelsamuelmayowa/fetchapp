@@ -6,4 +6,5 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
   dialectOptions: process.env.DB_SSL === 'true' ? { ssl: { rejectUnauthorized: true, ...(process.env.DB_SSL_CA ? { ca: process.env.DB_SSL_CA.replace(/\\n/g, '\n') } : {}) } } : {},
 });
+sequelize.dialect.Query = require('./lib/reprepareQuery')(sequelize.dialect.Query);
 module.exports = { sequelize };
