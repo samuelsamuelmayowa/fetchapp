@@ -29,7 +29,7 @@ app.use((req, res) => res.status(404).json({ message: 'API route not found.' }))
 app.use((error, req, res, next) => {
   if (res.headersSent) return next(error);
   const status = error.status || (error.name === 'SequelizeUniqueConstraintError' ? 409 : 500);
-  if (status >= 500) console.error('Request failed:', error.name);
+  if (status >= 500) console.error('Request failed:', JSON.stringify(require('./lib/errorDetails')(error)));
   res.status(status).json({ message: status === 409 ? 'This record already exists or was already processed.' : status >= 500 ? 'The service is temporarily unavailable. Please try again.' : error.message });
 });
 module.exports = app;
