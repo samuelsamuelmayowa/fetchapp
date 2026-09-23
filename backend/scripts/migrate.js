@@ -7,25 +7,37 @@ async function migrate() {
   const Migration = sequelize.define('AppMigration', { name: { type: DataTypes.STRING, primaryKey: true } });
   await Migration.sync();
   const name = '2026-09-promottv-workspaces';
-  if (await Migration.findByPk(name)) return console.log('Database already upgraded.');
+  const completed = await Migration.findByPk(name);
+  let addedColumns = 0;
   // sync without alter creates missing tables only; existing rows remain in place.
   await sequelize.sync();
   for (const model of [User, Task, Transaction]) {
     const existing = await qi.describeTable(model.getTableName());
     for (const [key, attribute] of Object.entries(model.rawAttributes)) {
       const field = attribute.field || key;
-      if (!existing[field]) await qi.addColumn(model.getTableName(), field, attribute);
+      if (!existing[field]) {
+        await qi.addColumn(model.getTableName(), field, attribute);
+        addedColumns++;
+        console.log('Added missing column:', model.getTableName() + '.' + field);
+      }
     }
   }
-  await qi.changeColumn('users', 'role', User.rawAttributes.role);
-  await qi.changeColumn('users', 'balance', User.rawAttributes.balance);
-  await qi.changeColumn('tasks', 'budget', Task.rawAttributes.budget);
-  await qi.changeColumn('transactions', 'amount', Transaction.rawAttributes.amount);
+  if (!completed) {
+    await qi.changeColumn('users', 'role', User.rawAttributes.role);
+    await qi.changeColumn('users', 'balance', User.rawAttributes.balance);
+    await qi.changeColumn('tasks', 'budget', Task.rawAttributes.budget);
+    await qi.changeColumn('transactions', 'amount', Transaction.rawAttributes.amount);
+  }
   const today = new Date().toISOString().slice(0, 10);
   for (const user of await User.findAll()) {
-    await user.update({ referralCode: user.referralCode || randomBytes(8).toString('hex'), penaltyThrough: user.penaltyThrough || today });
+    const changes = {};
+    if (!user.referralCode) changes.referralCode = randomBytes(8).toString('hex');
+    if (!user.penaltyThrough) changes.penaltyThrough = today;
+    if (Object.keys(changes).length) await user.update(changes);
   }
-  await Migration.create({ name });
-  console.log('Database upgraded. Existing accounts begin inactivity tracking after today (UTC).');
+  if (!completed) await Migration.create({ name });
+  console.log(completed
+    ? 'Database schema checked. Missing columns repaired: ' + addedColumns + '.'
+    : 'Database upgraded. Existing accounts begin inactivity tracking after today (UTC).');
 }
 migrate().catch(error => { console.error('Migration failed:', error.message); process.exitCode = 1; }).finally(() => sequelize.close());

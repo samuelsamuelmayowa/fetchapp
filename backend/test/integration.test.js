@@ -37,6 +37,17 @@ test('MySQL-backed member, campaign, moderation, wallet and security workflows',
     const legacy = await User.findOne({ where: { email: 'legacy@example.test' } });
     assert.equal(Number(legacy.balance), 12.5); assert.ok(legacy.referralCode);
     assert.equal(legacy.penaltyThrough, new Date().toISOString().slice(0, 10));
+    // A completion marker must not conceal a missing production column.
+    await legacy.update({ penaltyThrough: '2026-01-01' });
+    await qi.removeColumn('users', 'referralCode');
+    for (let n = 0; n < 2; n++) {
+      const repair = spawnSync(process.execPath, ['scripts/migrate.js'], { env: process.env, encoding: 'utf8', timeout: 30000 });
+      assert.equal(repair.status, 0, repair.stderr || repair.error?.message);
+      await legacy.reload();
+      assert.ok(legacy.referralCode);
+      assert.equal(Number(legacy.balance), 12.5);
+      assert.equal(legacy.penaltyThrough, '2026-01-01', 'Repair must preserve existing inactivity tracking.');
+    }
     server = app.listen(0, '127.0.0.1'); await new Promise(resolve => server.once('listening', resolve));
     const base = 'http://127.0.0.1:' + server.address().port + '/api';
     async function request(path, body, token, method = 'POST') {
@@ -47,6 +58,7 @@ test('MySQL-backed member, campaign, moderation, wallet and security workflows',
       const result = await request('/auth/signup', { fullName: 'Test Member', email, password: 'Testing123!', role, country: 'Nigeria', ...extra });
       assert.equal(result.status, 201, JSON.stringify(result.data)); return result.data;
     }
+    assert.equal((await request('/auth/login', { email: 'legacy@example.test', password: 'Testing123!' })).status, 200);
     const creator = await signup('creator@example.test', 'creator');
     const earner = await signup('earner@example.test');
     assert.equal((await request('/workspace/overview', null, null, 'GET')).status, 401);
